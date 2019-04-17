@@ -139,7 +139,8 @@ City *RouteMap::getCityByName(std::string name)
 			return &(cities_[i]);
 		}
 	}
-	return nullptr;
+	City * nullcity = nullptr;
+	return nullcity;
 }
 
 void RouteMap::evaluateCsvCell(std::string cell)
