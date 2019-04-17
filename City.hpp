@@ -4,8 +4,8 @@
 	template for readMap(), getCity(), isRoute() provided by Professor Tiziana Ligorio
 */
 
-#ifndef City_
-#define City_
+#ifndef City_hpp
+#define City_hpp
 #include <string>
 #include <vector>
 
@@ -13,6 +13,7 @@ class City
 {
   public:
 	/***************** Constructors ****************/
+	City();
 	City(std::string CityName);
 		// named node constructor
 	/***************** Accessors ****************/
@@ -48,5 +49,5 @@ class City
 		// note std vectors from <vector> self destruct naturally
 };
 
-#include "City.cpp"
+// #include "City.cpp"
 #endif

@@ -9,6 +9,12 @@
 #include <vector>
 #include <algorithm>
 
+City::City()
+{
+	visited = false;
+	city_edges_.clear();
+}
+
 City::City(std::string CityName)
 {
 	city_node_ = CityName;

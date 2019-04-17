@@ -32,7 +32,7 @@ int main()
 		cout << "City* start is named `" << start->getCityName() << "`"<< endl;
 	City * end = foo.getCityByName("P");
 		cout << "City* end is named `" << end->getCityName() << "`"<< endl;
-	cout << "calling isRoute("<< start->getCityName() << ", " << end->getCityName() << ")";
+	cout << "calling isRoute("<< start->getCityName() << ", " << end->getCityName() << ")" << endl;
 	if(foo.isRoute(start, end)){
 		cout << "\troute found" << endl;
 	}

@@ -4,8 +4,8 @@
 	template for readMap(), getCity(), isRoute() provided by Professor Tiziana Ligorio
 */
 
-#ifndef RouteMap_
-#define RouteMap_
+#ifndef RouteMap_hpp
+#define RouteMap_hpp
 #include <string>
 #include <vector>
 #include <fstream>
@@ -17,6 +17,7 @@ class RouteMap
 {
   public:
 	/***************** Constructors ****************/
+	RouteMap();
 	RouteMap(std::string csvName);
 	
 	/***************** Accessors ****************/
@@ -58,5 +59,5 @@ class RouteMap
 	void evaluateCsvCell(std::string cell);
 };
 
-#include "RouteMap.cpp"
+// #include "RouteMap.cpp"
 #endif

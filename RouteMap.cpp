@@ -7,6 +7,17 @@
 #include "RouteMap.hpp"
 #include "City.hpp"
 
+RouteMap::RouteMap()
+{
+}
+
+RouteMap::RouteMap(std::string csvName)
+{
+	if(!readMap(csvName)){
+		std::cout << "catching" << std::endl;
+	}
+}
+
 bool RouteMap::isRoute(City* origin, City* destination)
 {
 	for(int i=0;i<cities_.size();i++){
@@ -22,8 +33,6 @@ bool RouteMap::isRoute(City* origin, City* destination)
 		return false;
 	}
 }
-
-
 
 bool RouteMap::routeRecursive(City* origin, City* destination){
 	// check if destination
@@ -70,12 +79,7 @@ std::string RouteMap::getCorrectRoute()
 	return unReversed;
 }
 
-RouteMap::RouteMap(std::string csvName)
-{
-	if(!readMap(csvName)){
-		std::cout << "catching" << std::endl;
-	}
-}
+
 
 bool RouteMap::readMap(std::string input_file_name)
 {
