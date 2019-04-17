@@ -13,73 +13,87 @@ RouteMap::RouteMap()
 
 RouteMap::RouteMap(std::string csvName)
 {
-	if(!readMap(csvName)){
+	if (!readMap(csvName))
+	{
 		std::cout << "catching" << std::endl;
 	}
 }
 
-bool RouteMap::isRoute(City* origin, City* destination)
+bool RouteMap::isRoute(City *origin, City *destination)
 {
-	for(int i=0;i<cities_.size();i++){
+	for (int i = 0; i < cities_.size(); i++)
+	{
 		cities_[i].resetCity();
-		clearRouteString();
 	}
-	if(routeRecursive(origin, destination)){
+	if (routeRecursive(origin, destination))
+	{
 		std::cout << getCorrectRoute();
 		return true;
 	}
-	else{
-		std::cout << "no route found" << std::endl;
+	else
+	{
+		std::cout << "0" << std::endl;
 		return false;
 	}
 }
 
-bool RouteMap::routeRecursive(City* origin, City* destination){
+bool RouteMap::routeRecursive(City *origin, City *destination)
+{
 	// check if destination
-		// if dest. print City.name
-		// return true
+	// if dest. print City.name
+	// return true
 	// check neghbors for 'unvisited'
-		// recursive call these neighbors
-		// if R.call true
+	// recursive call these neighbors
+	// if R.call true
 	// print City.name " -> "
 	// return calls t/f ORRED
 	// std::cout << "routeRecursive Call with Origin `"<< origin->getCityName() << "` and dest `" << destination->getCityName() << "`" << std::endl;// debug
-	if(origin->getCityName() == destination->getCityName()){					// if origin == destination
+	if (origin->getCityName() == destination->getCityName())
+	{ // if origin == destination
 		std::string out = destination->getCityName();
 		// std::cout << "`" << origin->getCityName() << "\tflag, found destination`" << std::endl;	// debug
-		appendRouteOutput(out);
-		return true;															// base case
+		route_output_.push(out);
+		return true; // base case
 	}
-	origin->CityVisitedSet(true);												// if not base case, set city visited
-	bool temp = false;															// for loop break variable
-	City* nearbyPtr;
-	for(int i=0; i<origin->cityNeighbors().size();i++){
-		nearbyPtr = origin->cityNeighbors()[i];									// ptr peeks nth item in city_edges_
-		if(!nearbyPtr->cityVisited()){											// if node has not been visited
-			if(routeRecursive(nearbyPtr, destination)){							// recrusive call. if successful push this node to route_output
+	origin->CityVisitedSet(true); // if not base case, set city visited
+	bool temp = false;			  // for loop break variable
+	City *nearbyPtr;
+	for (int i = 0; i < origin->cityNeighbors().size(); i++)
+	{
+		nearbyPtr = origin->cityNeighbors()[i]; // ptr peeks nth item in city_edges_
+		if (!nearbyPtr->cityVisited())
+		{ // if node has not been visited
+			if (routeRecursive(nearbyPtr, destination))
+			{ // recrusive call. if successful push this node to route_output
 				// std::cout << "`route" << origin->getCityName() << "`" << std::endl;
-				std::string out = " >- " + origin->getCityName();
-				appendRouteOutput(out);
-				return true;													// route has found desitination, no other edges need to be traversed
+				std::string out = origin->getCityName();
+				route_output_.push(out);
+				return true; // route has found desitination, no other edges need to be traversed
 			}
-		}																		// loop tries next edge
+		} // loop tries next edge
 	}
 	return false;
-
 }
 
 std::string RouteMap::getCorrectRoute()
 {
-	std::string unReversed = "";
-	for(int i = route_output_.length()-1; i >= 0; i--)
+
+	std::string Output = "";
+	bool add_arrow = false;
+	while (!route_output_.empty())
 	{
-		unReversed += route_output_[i];
+		if (add_arrow)
+		{
+			Output += " -> ";
+		}
+		else
+			add_arrow = true;
+		Output += route_output_.top();
+		route_output_.pop();
 	}
-	unReversed += "\n";
-	return unReversed;
+	Output += "\n";
+	return Output;
 }
-
-
 
 bool RouteMap::readMap(std::string input_file_name)
 {
@@ -109,18 +123,8 @@ bool RouteMap::readMap(std::string input_file_name)
 				evaluateCsvCell(temp);
 			}
 		}
-	}	
+	}
 	return errout;
-}
-
-void RouteMap::appendRouteOutput(std::string reveraddition)
-{
-	route_output_ += reveraddition;
-}
-
-void RouteMap::clearRouteString()
-{
-	route_output_ = "";
 }
 
 void RouteMap::allCitiesOut()
@@ -143,7 +147,7 @@ City *RouteMap::getCityByName(std::string name)
 			return &(cities_[i]);
 		}
 	}
-	City * nullcity = nullptr;
+	City *nullcity = nullptr;
 	return nullcity;
 }
 
@@ -160,15 +164,14 @@ void RouteMap::evaluateCsvCell(std::string cell)
 		// for(int i=0; i < cities_.size();i++){
 		// 	std::cout << "\t" << cities_[i].getCityName() << std::endl;
 		// }
-
 	}
 	else
 	{
 		// std::cout << "new path: `" << cell << "`" << std::endl;					// debug
-		City *targetPtr = getCityByName(cell.substr(0, dashPos));					// pointer to the city we are adding an edge to
-		int target_length = cell.length() - dashPos - 1;							// length of the target city string
-		// std:: cout << "\tthis city is (by ptr) `" << targetPtr->getCityName() << std::endl; 
-		targetPtr->addEdge(getCityByName(cell.substr(dashPos+1, target_length)));	// find pointer to city that we are connecting via edge, add it former's city_edges_
+		City *targetPtr = getCityByName(cell.substr(0, dashPos)); // pointer to the city we are adding an edge to
+		int target_length = cell.length() - dashPos - 1;		  // length of the target city string
+		// std:: cout << "\tthis city is (by ptr) `" << targetPtr->getCityName() << std::endl;
+		targetPtr->addEdge(getCityByName(cell.substr(dashPos + 1, target_length))); // find pointer to city that we are connecting via edge, add it former's city_edges_
 	}
 }
 

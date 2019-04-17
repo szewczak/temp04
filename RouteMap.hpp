@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iostream>
 #include "City.hpp"
+#include <stack>
 
 class RouteMap
 {
@@ -47,12 +48,10 @@ class RouteMap
 		standard output in the form ORIGIN -> ... -> DESTINATION
 		**/
 	bool isRoute(City* origin, City* destination); 
-	void clearRouteString();
-	void appendRouteOutput(std::string reveraddition);
 	std::string getCorrectRoute();
 	
   private:
-	std::string route_output_;
+	std::stack<std::string> route_output_;
 	std::vector<City> cities_;
 	/***************** Kitchen Sink ****************/
 	bool routeRecursive(City* origin, City* destination);
